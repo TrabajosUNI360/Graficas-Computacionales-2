@@ -19,7 +19,7 @@ const audioLoader = new THREE.AudioLoader(); // Crear un cargador de audio
 audioLoader.load('cancion.mp3', function(buffer) { // Cargar el archivo de audio
     ambientMusic.setBuffer(buffer);
     ambientMusic.setLoop(true); // Hacer que la música se repita
-    ambientMusic.setVolume(0.5); // Ajustar el volumen (0 a 1)
+    ambientMusic.setVolume(0.3); // Ajustar el volumen (0 a 1)
     ambientMusic.play(); // Reproducir la música
 });
 
@@ -50,6 +50,17 @@ let mixer; // Mezclador de animaciones
 let runAction, idleAction; // Nuevas acciones para la animación de correr y reposo
 let runActionReady = false; // Verificar si la animación de correr está lista
 const clock = new THREE.Clock(); // Reloj para controlar el tiempo de las animaciones
+let jumpAction;
+let jumpActionReady = false;
+
+// Variables para el segundo jugador (Luigi)
+let luigi;
+let mixerLuigi; // Mezclador de animaciones de Luigi
+let runActionLuigi, idleActionLuigi; // Animaciones de correr y reposo
+let jumpActionLuigi; // Animación de salto
+let runActionReadyLuigi = false;
+let jumpActionReadyLuigi = false;
+const clockLuigi = new THREE.Clock();
 
 // Cargar el modelo de Mario desde un archivo FBX
 const fbxLoader = new FBXLoader();
@@ -76,11 +87,54 @@ fbxLoader.load('stand.fbx', function (object) {
         console.error('Error al cargar la animación de correr:', error);
     });
 
+    // Cargar la animacion de salto desde 'Jump.fbx'
+    fbxLoader.load('Jump.fbx', function(jumpObject){
+        jumpAction = mixer.clipAction(jumpObject.animations[0]);
+        jumpAction.loop = THREE.LoopRepeat;
+        jumpActionReady = true;
+    }, undefined, function (error){
+        console.error('Error al cargar la animacion de saltar: ', error);
+    });
+
 }, undefined, function (error) {
     console.error('Error al cargar el modelo de Mario:', error);
 });
 
-// Variables para el movimiento
+// Cargar el modelo de Luigi (similar a Mario)
+const fbxLoaderLuigi = new FBXLoader();
+fbxLoaderLuigi.load('standLuigi.fbx', function (object) {
+    luigi = object;
+    scene.add(luigi);
+    luigi.position.set(3, 1.1, 3.8); // Posición inicial de Luigi
+    
+    let rotationDegrees = 93;
+    luigi.rotation.y = THREE.MathUtils.degToRad(rotationDegrees);
+
+    mixerLuigi = new THREE.AnimationMixer(luigi);
+    idleActionLuigi = mixerLuigi.clipAction(object.animations[0]);
+    idleActionLuigi.play();
+
+    fbxLoaderLuigi.load('runLuigi.fbx', function (runObject) {
+        runActionLuigi = mixerLuigi.clipAction(runObject.animations[0]);
+        runActionLuigi.loop = THREE.LoopRepeat;
+        runActionReadyLuigi = true;
+    }, undefined, function (error){
+        console.error('Error al cargar la animacion de correr: ', error);
+    });
+
+    fbxLoaderLuigi.load('jumpLuigi.fbx', function(jumpObject){
+        jumpActionLuigi = mixerLuigi.clipAction(jumpObject.animations[0]);
+        jumpActionLuigi.loop = THREE.LoopRepeat;
+        jumpActionReadyLuigi = true;
+    }, undefined, function (error){
+        console.error('Error al cargar la animacion de saltar: ', error);
+    });
+
+}, undefined, function(error){
+    console.error('Error al cargar el modelo de Luigi:', error)
+});
+
+// Variables para el movimiento de Mario
 const keys = {
     left: false,
     right: false,
@@ -88,6 +142,15 @@ const keys = {
     isRunning: false, // Para controlar el estado de correr
 };
 
+// Variables de movimiento de Luigi
+const keysLuigi = {
+    left: false,
+    right: false,
+    jump: false,
+    isRunning: false,
+};
+
+/*Variables de Mario*/
 let velocityY = 0; // Velocidad vertical para el salto
 const gravity = -0.01; // Fuerza de gravedad
 const jumpForce = 0.2; // Fuerza del salto
@@ -95,6 +158,12 @@ const groundLevel = 1.1; // Altura del suelo
 const jumpLimit = 1.9; // Altura máxima del salto
 let isJumping = false; // Para controlar el estado de salto
 let isFalling = false; // Para controlar el estado de caída
+
+/*Varibales de Luigi*/
+let velocityYLuigi = 0;
+const jumpForceLuigi = 0.2;
+let isJumpingLuigi = false;
+let isFallingLuigi = false;
 
 // Cargar el sonido de salto
 const jumpSound = new THREE.Audio(audioListener); // Crear un objeto de audio para el salto
@@ -110,36 +179,90 @@ audioLoader.load('gritoMario.wav', function(buffer) {
     fallSound.setVolume(0.5); // Ajustar el volumen (0 a 1)
 });
 
+const jumpSoundLuigi = new THREE.Audio(audioListener); // Crear un objeto de audio para el salto
+audioLoader.load('yahooLuigi.wav', function(buffer) {
+    jumpSoundLuigi.setBuffer(buffer); // Establecer el buffer de sonido
+    jumpSoundLuigi.setVolume(0.4); // Ajustar el volumen (0 a 1)
+});
+
+const fallSoundLuigi = new THREE.Audio(audioListener); // Crear un objeto de audio para el salto
+audioLoader.load('gritoLuigi.wav', function(buffer) {
+    fallSoundLuigi.setBuffer(buffer); // Establecer el buffer de sonido
+    fallSoundLuigi.setVolume(0.4); // Ajustar el volumen (0 a 1)
+});
+
+/*Funciones para animaciones de Mario*/
 // Cambiar a la animación de correr
 function switchToRunAnimation() {
     if (runActionReady && runAction && !keys.isRunning) {
         idleAction.stop(); // Detener la animación en reposo
         runAction.play();  // Iniciar la animación de correr
         keys.isRunning = true;
+        keys.isJumping = false;
     }
 }
 
 // Cambiar a la animación de reposo
 function switchToIdleAnimation() {
-    if (keys.isRunning) {
+    if (keys.isRunning || keys.isJumping) {
         runAction.stop();  // Detener la animación de correr
+        jumpAction.stop(); // Detener la animacion de salto
         idleAction.play(); // Volver a la animación en reposo
+        keys.isRunning = false;
+        keys.isJumping = false;
+    }
+}
+
+// Cambiar a la animacion de salto
+function switchToJumpAnimation(){
+    if(jumpAction && jumpActionReady && !keys.isJumping){
+        idleAction.stop();
+        jumpAction.play();
+        keys.isJumping = true;
         keys.isRunning = false;
     }
 }
 
-// Manejar eventos de teclado
+/*Funciones para animaciones de Luigi*/
+function switchToRunAnimationLuigi() {
+    if (runActionReadyLuigi && !keysLuigi.isRunning) {
+        idleActionLuigi.stop();
+        runActionLuigi.play();
+        keysLuigi.isRunning = true;
+    }
+}
+
+function switchToIdleAnimationLuigi() {
+    if (keysLuigi.isRunning || keysLuigi.isJumpingLuigi) {
+        runActionLuigi.stop();
+        jumpActionLuigi.stop();
+        idleActionLuigi.play();
+        keysLuigi.isRunning = false;
+        keysLuigi.isJumpingLuigi = false;
+    }
+}
+
+function switchToJumpAnimationLuigi() {
+    if (jumpActionReadyLuigi && !keysLuigi.isJumpingLuigi) {
+        idleActionLuigi.stop();
+        jumpActionLuigi.play();
+        keysLuigi.isJumpingLuigi = true;
+    }
+}
+
+
+// Manejar eventos de teclado de Mario
 window.addEventListener('keydown', function (event) {
     switch (event.code) {
-        case 'ArrowLeft':
+        case 'KeyA':
             keys.left = true;
             switchToRunAnimation(); // Cambiar a la animación de correr
             break;
-        case 'ArrowRight':
+        case 'KeyD':
             keys.right = true;
             switchToRunAnimation(); // Cambiar a la animación de correr
             break;
-        case 'Space':
+        case 'KeyW':
             // Emitir sonido al saltar
             if (mario && mario.position.y <= groundLevel) { // Solo permitir saltar si está en el suelo
                 keys.jump = true;
@@ -147,25 +270,106 @@ window.addEventListener('keydown', function (event) {
                 isJumping = true; // Indicar que Mario está saltando
             }
             jumpSound.play(); // Reproducir el sonido al saltar, sin importar el estado
+            switchToJumpAnimation();
             break;
     }
 });
 
 window.addEventListener('keyup', function (event) {
     switch (event.code) {
-        case 'ArrowLeft':
+        case 'KeyA':
             keys.left = false;
             if (!keys.right) switchToIdleAnimation(); // Cambiar a la animación en reposo
             break;
-        case 'ArrowRight':
+        case 'KeyD':
             keys.right = false;
             if (!keys.left) switchToIdleAnimation(); // Cambiar a la animación en reposo
             break;
-        case 'Space':
+        case 'KeyW':
             keys.jump = false;
+            if(!keys.jump) switchToIdleAnimation(); // Cambiar a la animacion en reposo
             break;
     }
 });
+
+// Manejar eventos de teclado de Luigi
+window.addEventListener('keydown', function (event) {
+    switch (event.code) {
+        case 'KeyJ':
+            keysLuigi.left = true;
+            switchToRunAnimationLuigi();
+            break;
+        case 'KeyL':
+            keysLuigi.right = true;
+            switchToRunAnimationLuigi();
+            break;
+        case 'KeyI':
+            if (luigi && luigi.position.y <= groundLevel) {
+                keysLuigi.jump = true;
+                velocityYLuigi = jumpForceLuigi;
+                isJumpingLuigi = true;
+            }
+            jumpSoundLuigi.play(); //Reproducir el sonido de salto de Luigi
+            switchToJumpAnimationLuigi();
+            break;
+    }
+});
+
+window.addEventListener('keyup', function (event) {
+    switch (event.code) {
+        case 'KeyJ':
+            keysLuigi.left = false;
+            if (!keysLuigi.right) switchToIdleAnimationLuigi();
+            break;
+        case 'KeyL':
+            keysLuigi.right = false;
+            if (!keysLuigi.left) switchToIdleAnimationLuigi();
+            break;
+        case 'KeyI':
+            keysLuigi.jump = false;
+            if (!keysLuigi.jump) switchToIdleAnimationLuigi();
+            break;
+    }
+});
+
+// Función para detectar colisión entre Mario y Luigi
+function checkCollision() {
+    const threshold = 0.3; // Distancia mínima para considerar una colisión
+
+    // Obtener las posiciones de Mario y Luigi
+    const marioPosition = new THREE.Vector3(mario.position.x, mario.position.y, mario.position.z);
+    const luigiPosition = new THREE.Vector3(luigi.position.x, luigi.position.y, luigi.position.z);
+
+    // Calcular la distancia entre Mario y Luigi
+    const distance = marioPosition.distanceTo(luigiPosition);
+
+    // Comprobar si la distancia es menor al umbral de colisión
+    if (distance < threshold) {
+        handleCollision(); // Llamar a una función para manejar la colisión
+    }
+}
+
+// Función para manejar lo que ocurre cuando hay una colisión
+function handleCollision() {
+    // Aquí puedes definir lo que quieres que suceda en una colisión
+    // Por ejemplo, detener el movimiento de ambos personajes
+    keys.left = false;
+    keys.right = false;
+    keysLuigi.left = false;
+    keysLuigi.right = false;
+
+    // O puedes hacer que ambos reboten en direcciones opuestas
+    mario.position.x -= 0.1; // Retroceder a Mario
+    luigi.position.x += 0.1; // Retroceder a Luigi
+
+    /*Colision en el eje Y que no funciona bien*/
+    /*
+    if(jumpActionLuigi && jumpAction){
+        mario.position.y -= 0.1;
+        luigi.position.y -= 0.1;
+    }*/
+
+}
 
 // Posicionar la cámara
 camera.position.z = 5;
@@ -186,7 +390,7 @@ dl.position.set(0, 5, 10); // Posicionar la luz
 scene.add(dl);
 
 // Variables para la velocidad de movimiento
-const movementSpeed = 0.06; // Velocidad de movimiento (ajusta este valor según necesites)
+const movementSpeed = 0.03; // Velocidad de movimiento (ajusta este valor según necesites)
 
 // Animar la escena
 function animate() {
@@ -196,6 +400,11 @@ function animate() {
     if (mixer) {
         const delta = clock.getDelta(); // Calcular el tiempo desde la última llamada
         mixer.update(delta); // Actualizar el mezclador
+    }
+    
+    if (mixerLuigi) {
+        const deltaLuigi = clockLuigi.getDelta(); // Calcular el tiempo desde la última llamada
+        mixerLuigi.update(deltaLuigi); // Actualizar el mezclador
     }
 
     // Definir los ángulos de rotación
@@ -248,7 +457,7 @@ function animate() {
         // Comprobar si Mario desciende cuando X >= 3.5
         if (mario.position.x >= 3.5) {
             if (mario.position.y > -2) {
-                mario.position.y -= 0.05; // Ajustar la velocidad de descenso
+                mario.position.y -= 0.03; // Ajustar la velocidad de descenso
             } else {
                 // Reaparecer en la posición deseada
                 mario.position.set(1, 2, 3.8); // Reaparecer en Y = 2, X = 1
@@ -256,7 +465,7 @@ function animate() {
             }
         }
 
-        // Manejo del salto
+        // Manejo del salto de Mario
         if (isJumping) {
             velocityY += gravity; // Aplicar gravedad
             mario.position.y += velocityY; // Actualizar posición Y
@@ -277,7 +486,7 @@ function animate() {
         // Si está cayendo, descender hasta Y = 1.1
         if (isFalling) {
             if (mario.position.y > groundLevel) {
-                mario.position.y -= 0.05; // Desciende lentamente hacia 1.1
+                mario.position.y -= 0.03; // Desciende lentamente hacia 1.1
                 // Reproducir el sonido de caída solo una vez
                 if (!fallSound.isPlaying) { // Comprobar si el sonido no está sonando
                     fallSound.play(); // Reproducir el sonido de caída
@@ -297,6 +506,106 @@ function animate() {
             }
         }
     }
+
+    /*Movimiento de Luigi*/
+    if (luigi) {
+
+        if (keysLuigi.left) {
+            luigi.position.x -= movementSpeed; // Mover a la izquierda
+            if (luigi.rotation.y > leftRotationLimit) {
+                luigi.rotation.y -= rotationSpeed; // Girar hacia la izquierda
+            } else {
+                luigi.rotation.y = leftRotationLimit; // Asegurarse de no sobrepasar el límite
+            }
+        }
+        if (keysLuigi.right) {
+            luigi.position.x += movementSpeed; // Mover a la derecha
+            if (luigi.rotation.y < defaultRotation) {
+                luigi.rotation.y += rotationSpeed; // Girar hacia la derecha
+            } else {
+                luigi.rotation.y = defaultRotation; // Asegurarse de no sobrepasar el límite
+            }
+        }
+
+        // Comprobar si Luigi cae al vacío
+        if (luigi.position.x <= 0.5) {
+            // Hacer que Mario descienda lentamente hasta -2
+            if (luigi.position.y > -2) {
+                luigi.position.y -= 0.05; // Ajustar la velocidad de descenso
+            } else {
+                // Reaparecer en la posición deseada
+                luigi.position.set(1, 2, 3.8); // Reaparecer en Y = 2, X = 1
+                isFallingLuigi = true; // Indicar que Mario está cayendo
+            }
+        }
+
+        // Si está cayendo, descender hasta Y = 1.1
+        if (isFallingLuigi) {
+            if (luigi.position.y > groundLevel) {
+                luigi.position.y -= 0.03; // Desciende lentamente hacia 1.1
+            }
+            if (luigi.position.y <= groundLevel) {
+                luigi.position.y = groundLevel; // Ajustar a la altura del suelo
+                isFallingLuigi = false; // Detener la caída
+            }
+        }
+
+        // Comprobar si Luigi desciende cuando X >= 3.5
+        if (luigi.position.x >= 3.5) {
+            if (luigi.position.y > -2) {
+                luigi.position.y -= 0.05; // Ajustar la velocidad de descenso
+            } else {
+                // Reaparecer en la posición deseada
+                luigi.position.set(1, 2, 3.8); // Reaparecer en Y = 2, X = 1
+                isFallingLuigi = true; // Indicar que Mario está cayendo
+            }
+        }
+        
+        // Manejo del salto de Luigi
+        if (isJumpingLuigi) {
+            velocityYLuigi += gravity; // Aplicar gravedad
+            luigi.position.y += velocityYLuigi; // Actualizar posición Y
+
+            // Comprobar si Mario ha alcanzado la altura máxima
+            if (luigi.position.y >= jumpLimit) {
+                velocityYLuigi = 0; // Detener el movimiento hacia arriba
+            }
+
+            // Comprobar si Mario ha aterrizado
+            if (luigi.position.y <= groundLevel) {
+                luigi.position.y = groundLevel; // Mantenerlo en el suelo
+                velocityYLuigi = 0; // Resetear la velocidad
+                isJumpingLuigi = false; // Indicar que Mario ha dejado de saltar
+            }
+        }
+
+        // Si está cayendo, descender hasta Y = 1.1
+        if (isFallingLuigi) {
+            if (luigi.position.y > groundLevel) {
+                luigi.position.y -= 0.03; // Desciende lentamente hacia 1.1
+                // Reproducir el sonido de caída solo una vez
+                if (!fallSoundLuigi.isPlaying) { // Comprobar si el sonido no está sonando
+                    fallSoundLuigi.play(); // Reproducir el sonido de caída
+                }
+            }
+            if (luigi.position.y <= groundLevel) {
+                luigi.position.y = groundLevel; // Ajustar a la altura del suelo
+                velocityYLuigi = 0; // Resetear la velocidad
+                isFallingLuigi = false; // Detener la caída
+                // No detener el sonido de caída aquí
+            }
+        } else {
+            // Comprobar si Mario está en la posición de aterrizaje y sigue reproduciendo el sonido
+            if (luigi.position.x === 1 && fallSoundLuigi.isPlaying) {
+                // Asegurarse de que el sonido siga reproduciéndose
+                fallSoundLuigi.play(); // Reproducir el sonido de caída si está en la posición X de 1
+            }
+        }
+
+    }
+
+    // Comprobar colisiones entre Mario y Luigi
+    checkCollision();
 
     renderer.render(scene, camera);
 }
