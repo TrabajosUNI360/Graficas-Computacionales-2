@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/ffec4ec2ed.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="text-alligned-left">
+            <h1>Menu Principal</h1>
+            <div id="borde">
+            <button type="button" class="btn btn-custome" style="margin-left: 100px;" id="btn-newgame">Nueva</button> <br><br>
+            <button type="button" class="btn btn-custome" style="margin-left: 50px;" id="btn-puntuacion">Puntuación</button> <br><br>
+            <button type="button" class="btn btn-custome" style="margin-left: 0px;" id="btn-configuracion">Ajustes</button> <br><br>
+            <button type="button" class="btn btn-custome" style="margin-left: -50px;">Salir</button><br><br>
+            <audio controls autoplay>
+                <source  class="btn btn-custome" src="cancion.mp3" type="audio/mpeg">
+                Tu navegador no soporta la etiqueta de audio
+              </audio>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5 config-container d-none">
+        <div class="text-alligned-left">
+            <h1>Ajustes</h1>
+            <div id="borde" class="text-center">
+            <label for="rangeInput" class="form-label">Sonido   :  Min&nbsp; </label> 
+            <input type="range" class="form-range" id="rangeInput" min="0" max="100" step="10">
+            <label for="rangeInput" class="form-label"> &nbsp; Max</label><br><br>
+            <label for="rangeInput" class="form-label">Musica   :  Min&nbsp;</label> 
+            <input type="range" class="form-range" id="rangeInput" min="0" max="100" step="10">
+            <label for="rangeInput" class="form-label"> &nbsp; Max</label><br><br><br><br>
+            <button type="button" class="btn btn-custome" id="btn-atras">Atras</button><br><br><br><br>
+        </div></div>
+    </div>
+    <div class="container mt-5 puntuacion-container d-none">
+        <div class="text-alligned-left">
+            <h1>Puntuación</h1>
+            <div id="borde" class="text-center"><br><br><br><br>
+            <h3>Puntuacion</h3><br><br>
+            <h2>Puntuaciones de cada jugador</h2><br><br><br><br>
+            <button type="button" class="btn btn-custome" id="btn-atras-puntuacion">Atras</button><br><br><br><br>
+        </div></div>
+    </div>
+
+        
+    <div class="container mt-5 newgame-container d-none">
+        <div class="text-alligned-left">
+            <h1>Mauricio Poleas</h1><br><br><br><br>
+            <h3>Bienvenido</h3><br><br>
+            <h2>Elige el nivel</h2><br><br><br><br>
+            <!-- Botón de nivel difícil -->
+            <button type="button" class="btn btn-custome2" id="btn-dificultad-dificil">
+                Nivel Difícil<img src="fondo.png" width="50px" alt="Nivel Difícil">
+            </button> <br><br><br><br>
+            <button type="button" class="btn btn-custome" id="btn-atras-newgame">Atras</button><br><br><br><br>
+        </div>
+    </div>
+
+    <div class="container mt-5 Levels-container d-none">
+        <div class="text-alligned-left">
+            <h1>Nueva Partida</h1>
+            <div id="borde" class="text-center">
+            <!-- Botón de mapa -->
+            <button type="button" class="btn btn-custome2" id="btn-Mapa-2">
+            </button> <br><br>
+            <button type="button" class="btn btn-custome2" id="btn-Mapa-3">
+            </button> <br><br>
+            
+            <button type="button" class="btn btn-custome" id="btn-atras-levels">Atras</button><br><br><br><br>
+        </div></div>
+    </div>
+    
+    <!-- Container de la pantalla principal del juego (inicialmente oculto) -->
+        <div class="container mt-5 game-container d-none" id="game-container">
+        <div class="text-center">
+            <h1>Nuestro Jueguito</h1><br><br><br>
+            <h3>Bienvenido</h3><br><br>
+            <h2>Buena suerte navegante</h2><br><br><br><br>
+            <h2>Tus vidas:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tu puntaje:</h2>
+            <h3>&nbsp;♡♡♡♡♡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   00000</h3><br><br><br>      
+            <canvas id="miCanvas" width="300" height="300"></canvas>
+            <br><br><br><br><br> 
+
+            <button type="button" class="btn btn-custome" id="btn-pausa-juego">Pausa</button><br><br><br><br>
+
+            <button type="button" class="btn btn-custome" id="btn-volver-juego">salir del juego</button><br><br><br><br>
+        </div>
+    </div>
+    <div class="container mt-5 pause-container d-none" id="pause-container">
+        <div class="text-center">
+            <h1>Pausa</h1><br><br>
+            <button type="button" class="btn btn-custome" id="btn-samegame">Continuar</button> <br><br>
+            <button type="button" class="btn btn-custome" id="btn-newgame">Volver a iniciar</button> <br><br>
+            <button type="button" class="btn btn-custome" id="btn-configuracion">Configuración</button> <br><br>
+            <button type="button" class="btn btn-custome" id="btn-puntuacion">Puntuación</button> <br><br>
+            <button type="button" class="btn btn-custome" id="btn-salirpause">Salir</button><br><br><br><br><br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+   
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const btnConfiguracion = document.getElementById('btn-configuracion');
+        const btnPuntuacion = document.getElementById('btn-puntuacion');
+        const btnnewgame = document.getElementById('btn-newgame');
+        const btnDificultadFacil = document.getElementById('btn-dificultad-facil');
+        const btnDificultadDificil = document.getElementById('btn-dificultad-dificil');
+        const btnMapa1 = document.getElementById('btn-Mapa-1');
+        const btnMapa2 = document.getElementById('btn-Mapa-2');
+        const btnMapa3 = document.getElementById('btn-Mapa-3');
+        
+
+
+        
+        const configContainer = document.querySelector('.config-container');
+        const puntuacionContainer = document.querySelector('.puntuacion-container');
+        const newgamecontainer = document.querySelector('.newgame-container');
+        const gameContainer = document.querySelector('#game-container'); // Cambia '.game-container' a '#game-container'
+        const pausecontainer = document.querySelector('#pause-container');
+        
+        const btnAtras = document.getElementById('btn-atras');
+        const btnAtrasPuntuacion = document.getElementById('btn-atras-puntuacion');
+        const btnAtrasLevels = document.getElementById('btn-atras-levels');
+        const btnVolverJuego = document.getElementById('btn-volver-juego');
+        const btnSalirPause = document.getElementById('btn-samegame');
+        const btnpause = document.getElementById('btn-pausa-juego');
+        const levelsContainer = document.querySelector('.Levels-container');
+        const mainContainer = document.querySelector('.container'); // Contenedor principal
+        
+        //funciona
+        btnConfiguracion.addEventListener('click', () => {
+            configContainer.classList.toggle('d-none');
+        });
+        //funciona
+        btnPuntuacion.addEventListener('click', () => {
+            puntuacionContainer.classList.toggle('d-none');
+        });
+        //funciona
+       // btnDificultadDificil.addEventListener('click', () => {
+       //     gameContainer.classList.remove('d-none');
+       //     configContainer.classList.add('d-none');
+       //     puntuacionContainer.classList.add('d-none');
+       // })
+      
+        //Funciona
+        btnnewgame.addEventListener('click', () => {
+            levelsContainer.classList.remove('d-none'); // Muestra el contenedor de niveles
+            configContainer.classList.add('d-none'); // Oculta el contenedor de configuración
+        puntuacionContainer.classList.add('d-none'); // Oculta el contenedor de puntuación
+        newgamecontainer.classList.add('d-none'); // Oculta el contenedor de nuevo juego
+        gameContainer.classList.add('d-none'); // Oculta el contenedor de juego
+        pausecontainer.classList.add('d-none'); // Oculta el contenedor de pausa
+        mainContainer.classList.add('d-none'); // Oculta el contenedor principal
+        });
+      
+        btnpause.addEventListener('click', () => {
+            gameContainer.classList.add('d-none'); // Oculta el game-container
+            pausecontainer.classList.remove('d-none'); // Muestra el pause-container
+        });
+        
+       
+        btnMapa2.addEventListener('click', function () {
+            // Redirige a modelos.html
+            window.location.href = 'index.html';
+        });
+        btnMapa3.addEventListener('click', function () {
+            // Redirige a modelos.html
+            window.location.href = 'index.html';
+        });
+       
+
+        //Funciona Atras Configuraciones
+        btnAtras.addEventListener('click', () => {
+        configContainer.classList.add('d-none');
+        });
+
+        btnSalirPause.addEventListener('click', () => {
+            pausecontainer.classList.add('d-none'); // Oculta el pause-container
+            gameContainer.classList.remove('d-none'); // Muestra el game-container
+        });
+        //Funciona
+        btnAtrasPuntuacion.addEventListener('click', () => {
+                puntuacionContainer.classList.add('d-none');
+        });
+        btnAtrasLevels.addEventListener('click', () => {
+                levelsContainer.classList.add('d-none');
+                mainContainer.classList.remove('d-none');
+            });
+        btnVolverJuego.addEventListener('click', function ()  {
+            window.location.href = 'Juego.html';
+            });
+        }); 
+    </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+        <script>
+            const btnConfiguracion = document.getElementById('btn-configuracion');
+            const btnPuntuacion = document.getElementById('btn-puntuacion');
+            const btnNewGame = document.getElementById('btn-newgame');
+            const btnDificultadFacil = document.getElementById('btn-dificultad-facil');
+            const btnDificultadDificil = document.getElementById('btn-dificultad-dificil');
+            const configContainer = document.querySelector('.config-container');
+            const puntuacionContainer = document.querySelector('.puntuacion-container');
+            const newgameContainer = document.querySelector('.newgame-container');
+            const gameContainer = document.querySelector('.game-container');
+            const btnAtrasConfiguracion = document.getElementById('btn-atras-configuracion');
+            const btnAtrasPuntuacion = document.getElementById('btn-atras-puntuacion');
+            const btnAtrasNewGame = document.getElementById('btn-atras-newgame');
+            const btnVolverJuego = document.getElementById('btn-volver-juego');
+            const btnSalirPause = document.getElementById('btn-samegame');
+            const pausecontainer = document.querySelector('#pause-container');
+            const btnpause = document.getElementById('btn-pausa-juego');
+            const btnMapa1 = document.getElementById('btn-Mapa-1');
+            const btnMapa2 = document.getElementById('btn-Mapa-2');
+            const btnMapa3 = document.getElementById('btn-Mapa-3');
+        
+                btnpause.addEventListener('click', () => {
+                        gameContainer.classList.add('d-none'); // Oculta el game-container
+                        pausecontainer.classList.remove('d-none'); // Muestra el pause-container
+                    });
+                btnSalirPause.addEventListener('click', () => {
+                        pausecontainer.classList.add('d-none'); // Oculta el pause-container
+                        gameContainer.classList.remove('d-none'); // Muestra el game-container
+                    });
+            btnVolverJuego.addEventListener('click', () => {
+                        gameContainer.classList.add('d-none');
+                        document.querySelector('.container').classList.remove('d-none');
+                    });
+                    btnAtrasNewGame.addEventListener('click', () => {
+                newgameContainer.classList.add('d-none');
+                document.querySelector('.container').classList.remove('d-none');
+            });
+            btnAtrasPuntuacion.addEventListener('click', () => {
+                puntuacionContainer.classList.add('d-none');
+        });
+        btnAtras.addEventListener('click', () => {
+        configContainer.classList.add('d-none');
+        });
+        </script>
+</body>
+</html>

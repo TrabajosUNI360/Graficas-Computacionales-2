@@ -1,0 +1,218 @@
+h1{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-style: italic;
+    font-size: 40px;
+    letter-spacing: 1px;
+    margin-left: 40px;
+    color:rgba(255, 255, 255, 0.719);
+}
+#borde{
+    border:10px solid rgba(133, 166, 255, 0.514);
+    border-radius: 10px;
+    padding:20px;
+}
+h3{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-style: italic;
+    letter-spacing: 1px;
+    font-size: 20px;
+    color:rgba(255, 255, 255, 0.719);
+}
+h2{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-style: italic;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color:rgba(255, 255, 255, 0.719);
+}
+label{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-style: italic;
+    letter-spacing: 1px;
+    font-size: 20px;
+    color:rgba(255, 255, 255, 0.719);
+}
+.color-overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .2) ;
+}
+.btn-custome{
+  padding: 10px;
+  width: 25%;
+  height: 15%; 
+  background: black;
+  border:5px solid rgba(133, 166, 255, 0.514);
+  color: #ffcb6a; 
+  border-radius: 120px  120px 120px 0%;
+  border-color: #ffcb6a;
+  font-size: 32px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  transition: color 0.25s ease;
+  transition: transform 0.25s ease;
+}
+
+.btn-custome:hover{
+    color:black;
+    border:5px solid black;
+    background: #ffcb6a;
+    transform: scale(0.95);
+}
+
+#btn-Mapa-2{
+background-image:url(fondo.png);
+width: 200px;
+background-image:url(fondo.png);
+width: 100px;
+height: 100px;
+background-size: cover;
+background-position: center;
+border-radius: 10px 10px 10px 10px;
+border:5px solid #76b2ff8e;
+cursor: pointer;
+transition: transform 0.25s ease;
+  }
+  
+  #btn-Mapa-2:hover{
+    transform: scale(0.95);
+  }
+  #btn-Mapa-3{
+    background-image:url(fondo.png);
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px 10px 10px 10px;
+    border:5px solid #76b2ff8e;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+    }
+      
+      #btn-Mapa-3:hover{
+        transform: scale(0.95);
+      }
+.form-range {
+    background-color: black;
+    max-width: 250px;
+    max-height: 10%; 
+    border-radius: 30px;
+    padding: 5px;
+    border: 2px solid #ffcb6a; 
+}
+
+.form-range:hover {
+    background-color: #e0e0e063;
+}
+
+a:hover{
+    text-decoration: none;
+}
+body{
+    background-color: black;
+}
+
+.container {
+    background-image: url('https://steamuserimages-a.akamaihd.net/ugc/1459681099272106284/E04A58C6F8D1FA9883010D79C8B723B9E2490D27/?imw=512&&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false');    
+    padding: 40px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 30px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 3;
+    z-index: 0; 
+}
+.config-container {
+    position: absolute;
+    z-index: 920;
+}
+.pause-container {
+    background-image: url('https://steamuserimages-a.akamaihd.net/ugc/1459681099272106284/E04A58C6F8D1FA9883010D79C8B723B9E2490D27/?imw=512&&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false');    
+    padding: 40px;
+    background-size: cover;
+    background-position: center;
+    width: 1000px;
+    height:500px;
+    border-radius: 30px;
+    transform: translate(-50%, -60%); /* Esto centra el HUD */
+    top: 50%;
+    left: 50%;
+    bottom: 3;
+    z-index: 110;
+    position: absolute;
+}
+.puntuacion-container {
+    position: absolute;
+}
+.newgame-container {
+    position: absolute;
+}
+#player{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 40px;
+    letter-spacing: 1px;
+    margin-top:10px;
+    margin-left: 10px;
+    color:rgba(255, 255, 255, 0.719);
+}
+.game-container {
+    position: absolute;
+    border-radius: 30px;
+    top:70%;
+    left: 50px;
+    bottom: 10px;
+    background-color: rgba(197, 39, 39, 0.5);
+}
+.game-2-container {
+    position: absolute;
+    top:70%;
+    right:50px;
+    bottom: 10px;
+    border-radius: 30px;
+    background-color: rgba(67, 199, 78, 0.5); 
+}
+.player-info {
+    display: flex;
+    align-items: center;
+    padding: 10px;margin-top:10px;
+    margin-left: 10px;
+}
+.hud-container {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%, 0%); /* Esto centra el HUD */
+    z-index: 14;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.hud-container p {
+    margin: 0;
+}
+.player-image {
+    flex: 0.75; /* La imagen ocupará la mitad del espacio */
+}
+
+.player-name {
+    flex: 1; /* El nombre ocupará la otra mitad del espacio */
+    text-align: left; /* Alinea el texto a la izquierda */
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 25px;
+    letter-spacing: 1px;
+    color:rgba(255, 255, 255, 0.719);
+}
+
+.boton-pausa {
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-15%, 0%); /* Esto centra el HUD */
+    position: absolute;
+    
+}
