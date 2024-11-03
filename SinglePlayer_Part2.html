@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.155.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.155.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="hud-container col-3" id="hud-container">
+        <p>Vidas: <span id="vidas">3</span></p>
+        <p>Puntaje: <span id="puntaje">0</span></p>
+    </div>
+
+    <div class="mt-5 game-container col-3" id="game-container">
+        <div class="player-info">
+            <div class="player-image">
+                <img src="hongo.png" alt="hongo" width="90px" height="90px">
+            </div>
+            <div class="player-name">
+                <p>Mario<br>0%</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="boton-pausa col-6">
+        <button type="button" class="btn btn-custome" id="btn-pausa-juego">Pausa</button><br><br>
+    </div>
+    <div class="container mt-5 config-container d-none">
+        <div class="text-alligned-left">
+            <h1>Ajustes</h1>
+            <div id="borde" class="text-center">
+            <label for="rangeInput" class="form-label">Sonido   :  Min&nbsp; </label> 
+            <input type="range" class="form-range" id="rangeInput" min="0" max="100" step="10">
+            <label for="rangeInput" class="form-label"> &nbsp; Max</label><br><br>
+            <label for="rangeInput" class="form-label">Musica   :  Min&nbsp;</label> 
+            <input type="range" class="form-range" id="rangeInput" min="0" max="100" step="10">
+            <label for="rangeInput" class="form-label"> &nbsp; Max</label><br><br><br><br>
+            <button type="button" class="btn btn-custome" id="btn-atras">Atras</button><br><br><br><br>
+        </div></div>
+    </div>
+    <div class="mt-5 game-2-container col-3" id="game-2-container">
+        <div class="player-info">
+            <div class="player-image">
+                <img src="hongo.png" alt="hongo" width="90px" height="90px">
+            </div>
+            <div class="player-name">
+                <p>Luigi<br>0%</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5 pause-container d-none" id="pause-container">
+        <div class="text-alligned-left">
+            <h1>Pausa</h1>
+            <div id="borde" class="text-center">
+            <button type="button" class="btn btn-custome" id="btn-configuracion">Ajustes</button><br><br>
+            <button type="button" class="btn btn-custome" id="btn-puntuacion">Menu</button><br><br>
+            <button type="button" class="btn btn-custome" id="btn-salir">Salir</button>
+        </div></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module" src="JS_SingerPlayer_Part2.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const btnConfiguracion = document.getElementById('btn-configuracion');
+            const configContainer = document.querySelector('.config-container');
+            const btnPausaJuego = document.getElementById('btn-pausa-juego');
+            const pauseContainer = document.getElementById('pause-container');
+            const btnAtras = document.getElementById('btn-atras');
+            const btnSalir = document.getElementById('btn-salir');
+            const btnPuntuacion = document.getElementById('btn-puntuacion');
+            btnPausaJuego.addEventListener('click', function () {
+                pauseContainer.classList.remove('d-none');
+            });
+            btnSalir.addEventListener('click', function () {
+                pauseContainer.classList.add('d-none');
+            });
+            btnPuntuacion.addEventListener('click', function () {
+                window.location.href = 'juego.html';
+            });
+            btnConfiguracion.addEventListener('click', function () {
+            configContainer.classList.toggle('d-none');
+        });
+        btnAtras.addEventListener('click', function ()  {
+        configContainer.classList.add('d-none');
+        });
+        });
+    </script>
+</body>
+</html>

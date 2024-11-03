@@ -25,7 +25,7 @@ audioLoader.load('cancion.mp3', function(buffer) { // Cargar el archivo de audio
 
 // Cargar una imagen como fondo
 const textureLoader = new THREE.TextureLoader();
-const backgroundTexture = textureLoader.load('fondo.png'); // Especifica la ruta a tu imagen
+const backgroundTexture = textureLoader.load('cosmo.jpeg'); // Especifica la ruta a tu imagen
 scene.background = backgroundTexture; // Asignar la textura como fondo
 
 // Cargar el archivo MTL primero para el escenario

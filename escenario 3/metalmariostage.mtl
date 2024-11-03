@@ -1,0 +1,72 @@
+newmtl metalmariostage:Material01
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd diamond.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl metalmariostage:Material03
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd diamond_2.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl metalmariostage:Material05
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd diamond_3.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl metalmariostage:Material07
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd way.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl metalmariostage:Material09
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd way_side.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl metalmariostage:Material11
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd metalwires.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl metalmariostage:Material13
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd metalwires_2.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl metalmariostage:Material15
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd yellow.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
