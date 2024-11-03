@@ -1,0 +1,90 @@
+newmtl fighting_polygon_stage:platforms_bottom1
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd platforms_bottom.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:platforms_bottom_3
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd platforms_bottom_2.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:platforms_top1
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd platforms_top.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:rock1
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd rock.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:rock_4
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd rock_2.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:rock_6
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd rock_3.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:rock_top1
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd rock_top.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:rock_top_4
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd rock_top_2.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:rock_top_6
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd rock_top_3.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl fighting_polygon_stage:rock_way1
+illum 4
+Kd 0.800000 0.800000 0.800000
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+map_Kd rock_way.png
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
