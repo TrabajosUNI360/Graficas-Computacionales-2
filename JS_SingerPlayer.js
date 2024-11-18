@@ -53,6 +53,12 @@ const clock = new THREE.Clock(); // Reloj para controlar el tiempo de las animac
 let jumpAction;
 let jumpActionReady = false;
 
+let Bowser;
+let mixerBowser;
+let runActionBowser, idleActionBowser;
+let runActionReadyBowser = false;
+const clockBowser = new THREE.Clock();
+
 // Cargar el modelo de Mario desde un archivo FBX
 const fbxLoader = new FBXLoader();
 fbxLoader.load('stand.fbx', function (object) {
@@ -86,6 +92,44 @@ fbxLoader.load('stand.fbx', function (object) {
     }, undefined, function (error){
         console.error('Error al cargar la animacion de saltar: ', error);
     });
+
+}, undefined, function (error) {
+    console.error('Error al cargar el modelo de Mario:', error);
+});
+
+const fbxLoaderBowser = new FBXLoader();
+fbxLoaderBowser.load('Bowser_Idle.fbx', function (object) {
+    Bowser = object; // Guardar el modelo de Mario
+    scene.add(Bowser);
+    Bowser.position.set(3, 1.1, 3.8); // Ajustar la posición de Mario en el escenario
+    
+    // Especificar el ángulo de rotación en grados
+    let rotationDegrees = -93; // Cambia este valor según necesites
+    Bowser.rotation.y = THREE.MathUtils.degToRad(rotationDegrees); // Rota en el eje Y
+    
+    // Inicializar el mezclador de animaciones
+    mixerBowser = new THREE.AnimationMixer(Bowser);
+    idleActionBowser = mixerBowser.clipAction(object.animations[0]); // Animación en reposo
+    idleActionBowser.play(); // Iniciar la animación en reposo
+
+    // Cargar la animación de correr desde 'Run.fbx'
+    fbxLoaderBowser.load('bowser_corriendo.fbx', function (runObject) {
+        runActionBowser = mixer.clipAction(runObject.animations[0]); // Cargar la animación de correr
+        runActionBowser.loop = THREE.LoopRepeat; // Configurar la animación para repetirse
+        runActionReadyBowser = true; // Indicar que la animación de correr está lista
+    }, undefined, function (error) {
+        console.error('Error al cargar la animación de correr:', error);
+    });
+
+    /*
+    // Cargar la animacion de salto desde 'Jump.fbx'
+    fbxLoader.load('Jump.fbx', function(jumpObject){
+        jumpAction = mixer.clipAction(jumpObject.animations[0]);
+        jumpAction.loop = THREE.LoopRepeat;
+        jumpActionReady = true;
+    }, undefined, function (error){
+        console.error('Error al cargar la animacion de saltar: ', error);
+    });*/
 
 }, undefined, function (error) {
     console.error('Error al cargar el modelo de Mario:', error);
@@ -245,6 +289,12 @@ function animate() {
         const delta = clock.getDelta(); // Calcular el tiempo desde la última llamada
         mixer.update(delta); // Actualizar el mezclador
     }
+
+    if (mixerBowser) {
+        const delta = clockBowser.getDelta(); // Calcular el tiempo desde la última llamada
+        mixerBowser.update(delta); // Actualizar el mezclador
+    }
+
 
     // Definir los ángulos de rotación
     const defaultRotation = THREE.MathUtils.degToRad(93); // Rotación predeterminada en radianes
